@@ -1,0 +1,186 @@
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --text: #111111;
+  --placeholder: rgba(17, 17, 17, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Instrument Serif", serif;
+  color: var(--text);
+  overflow: hidden;
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  position: relative;
+  isolation: isolate;
+}
+
+.typing-shell {
+  width: min(760px, 100%);
+  position: relative;
+  z-index: 2;
+}
+
+.typing-surface {
+  min-height: 1.2em;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  text-align: center;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  caret-color: var(--text);
+}
+
+.typing-shell.is-releasing .typing-surface {
+  visibility: hidden;
+}
+
+.typing-surface:focus {
+  outline: none;
+}
+
+.typing-surface:empty::before {
+  content: attr(data-placeholder);
+  display: block;
+  color: var(--placeholder);
+  pointer-events: none;
+}
+
+.release-layer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.release-word {
+  max-width: min(760px, calc(100vw - 48px));
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  text-align: center;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  animation: drop-away 900ms cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.floating-stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.floating-word {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.floating-word__motion {
+  display: block;
+  will-change: transform, opacity, filter;
+}
+
+.floating-word.is-entering .floating-word__motion {
+  animation: pop-in 850ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.floating-word__inner {
+  display: block;
+  font-size: clamp(1.15rem, 2.4vw, 2rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  color: rgba(17, 17, 17, 0.88);
+  animation: sway var(--sway-duration) ease-in-out infinite alternate;
+}
+
+@keyframes drop-away {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 220px, 0) scale(0.12);
+    filter: blur(10px);
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.15);
+    filter: blur(8px);
+  }
+
+  65% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.08);
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes sway {
+  0% {
+    transform: translate3d(var(--drift-x-start), var(--drift-y-start), 0)
+      rotate(var(--rotate-start));
+  }
+
+  100% {
+    transform: translate3d(var(--drift-x-end), var(--drift-y-end), 0)
+      rotate(var(--rotate-end));
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 20px;
+  }
+
+  .typing-surface,
+  .release-word {
+    font-size: clamp(2.5rem, 15vw, 4.5rem);
+  }
+
+  .floating-word__inner {
+    font-size: clamp(1rem, 5vw, 1.35rem);
+  }
+}

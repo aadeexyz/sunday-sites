@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Say Something</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <div id="composer" class="typing-shell">
+        <div
+          id="thought"
+          class="typing-surface"
+          contenteditable="true"
+          spellcheck="false"
+          autocapitalize="off"
+          autocomplete="off"
+          autocorrect="off"
+          data-placeholder="say something..."
+          aria-label="Say something"
+          aria-multiline="true"
+          role="textbox"
+        ></div>
+        <div id="release-layer" class="release-layer" aria-hidden="true"></div>
+      </div>
+      <div id="floating-stage" class="floating-stage" aria-hidden="true"></div>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
